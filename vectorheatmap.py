@@ -77,6 +77,18 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
                 types=[QgsProcessing.TypeVectorPoint]
             )
         )
+      
+        self.addParameter(
+            QgsProcessingParameterField(
+                'WEIGHT_FIELD',
+                self.tr('Campo de peso'),
+                parentLayerParameterName='INPUT',
+                optional=True,
+                type=QgsProcessingParameterField.Numeric
+            )
+        )        
+        
+
         self.addParameter(
             QgsProcessingParameterVectorDestination(
                 'OUTPUT',
@@ -118,19 +130,7 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
                 # Make distance units match the INPUT layer units
 
             )
-        )
-      
-        self.addParameter(
-            QgsProcessingParameterField(
-                'WEIGHT_FIELD',
-                self.tr('Campo de peso'),
-                parentLayerParameterName='INPUT',
-                optional=True,
-                type=QgsProcessingParameterField.Numeric
-            )
-        )        
-        
-        
+        )    
 
     def processAlgorithm(self, parameters, context, feedback):
         """
