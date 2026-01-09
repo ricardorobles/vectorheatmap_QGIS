@@ -10,7 +10,8 @@ from qgis.core import (QgsProcessing,
                        QgsProcessingParameterRasterDestination,
                        QgsProcessingParameterFeatureSink,
                        QgsProcessingParameterVectorLayer,
-                       QgsProcessingMultiStepFeedback
+                       QgsProcessingMultiStepFeedback,
+                       QgsProcessingParameterField
                        )
                        
 from qgis import processing
@@ -118,7 +119,16 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
 
             )
         )
-        
+      
+        self.addParameter(
+            QgsProcessingParameterField(
+                'WEIGHT_FIELD',
+                self.tr('Campo de peso'),
+                parentLayerParameterName='INPUT',
+                optional=True,
+                type=QgsProcessingParameterField.Numeric
+            )
+        )        
         
         
 
@@ -139,7 +149,9 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
         # using self.parameterAsDouble.
         bufferdist = self.parameterAsDouble(parameters, 'BUFFERDIST',
                                             context)
-        
+      
+        weight_field = self.parameterAsString(parameters, 'WEIGHT_FIELD', context)
+      
         pixelsize = self.parameterAsDouble(parameters, 'PIXELSIZE',
                                                 context)
                                                 
@@ -155,7 +167,7 @@ class ExampleProcessingAlgorithm(QgsProcessingAlgorithm):
                             'RADIUS':bufferdist,
                             'RADIUS_FIELD':'',
                             'PIXEL_SIZE':pixelsize,
-                            'WEIGHT_FIELD':'',
+                            'WEIGHT_FIELD':weight_field,
                             'KERNEL':0,
                             'DECAY':0,
                             'OUTPUT_VALUE':0,
